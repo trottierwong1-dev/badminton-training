@@ -158,6 +158,15 @@
             }
           };
 
+          // Auto-open 9 Corners Shadow training if URL has #9corners
+          useEffect(() => {
+            if (window.location.hash === '#9corners') {
+              setShowSixCorners(true);
+              // Remove the hash from URL after opening
+              history.replaceState(null, null, ' ');
+            }
+          }, []);
+
           useEffect(() => {
             let interval;
             if (activeTimer) {
