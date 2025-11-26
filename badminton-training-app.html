@@ -9,6 +9,10 @@
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
+        /* Prevent iOS zoom on input focus */
+        input, select, textarea {
+            font-size: 16px !important;
+        }
         @keyframes pulse {
             0%, 100% {
                 opacity: 1;
@@ -128,8 +132,8 @@
           const [sixCornersConfig, setSixCornersConfig] = useState({
             sets: 3,
             shotsPerSet: 20,
-            restBetweenShots: 3,
-            restBetweenSets: 60
+            restBetweenShots: 2.0,
+            restBetweenSets: 30
           });
           const [sixCornersState, setSixCornersState] = useState({
             isRunning: false,
@@ -169,8 +173,8 @@
             if (sixCornersState.isRunning) {
               interval = setInterval(() => {
                 setSixCornersState(prev => {
-                  if (prev.timeRemaining > 1) {
-                    return { ...prev, timeRemaining: prev.timeRemaining - 1 };
+                  if (prev.timeRemaining > 0.25) {
+                    return { ...prev, timeRemaining: Math.round((prev.timeRemaining - 0.25) * 100) / 100 };
                   }
                   
                   if (prev.phase === 'ready') {
@@ -277,7 +281,7 @@
                   
                   return prev;
                 });
-              }, 1000);
+              }, 250);
             }
             return () => clearInterval(interval);
           }, [sixCornersState.isRunning, sixCornersConfig]);
@@ -664,47 +668,94 @@
                           <div className="grid grid-cols-2 gap-4">
                             <div>
                               <label className="block text-sm font-medium text-gray-700 mb-2">Number of Sets</label>
-                              <input
-                                type="number"
-                                min="1"
-                                max="10"
+                              <select
                                 value={sixCornersConfig.sets}
-                                onChange={(e) => setSixCornersConfig({...sixCornersConfig, sets: parseInt(e.target.value) || 1})}
+                                onChange={(e) => setSixCornersConfig({...sixCornersConfig, sets: parseInt(e.target.value)})}
                                 className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent text-lg font-semibold"
-                              />
+                                style={{ fontSize: '16px' }}
+                              >
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                                <option value="6">6</option>
+                                <option value="7">7</option>
+                                <option value="8">8</option>
+                                <option value="9">9</option>
+                                <option value="10">10</option>
+                              </select>
                             </div>
                             <div>
                               <label className="block text-sm font-medium text-gray-700 mb-2">Shots Per Set</label>
-                              <input
-                                type="number"
-                                min="5"
-                                max="50"
+                              <select
                                 value={sixCornersConfig.shotsPerSet}
-                                onChange={(e) => setSixCornersConfig({...sixCornersConfig, shotsPerSet: parseInt(e.target.value) || 5})}
+                                onChange={(e) => setSixCornersConfig({...sixCornersConfig, shotsPerSet: parseInt(e.target.value)})}
                                 className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent text-lg font-semibold"
-                              />
+                                style={{ fontSize: '16px' }}
+                              >
+                                <option value="5">5</option>
+                                <option value="10">10</option>
+                                <option value="15">15</option>
+                                <option value="20">20</option>
+                                <option value="25">25</option>
+                                <option value="30">30</option>
+                                <option value="35">35</option>
+                                <option value="40">40</option>
+                                <option value="45">45</option>
+                                <option value="50">50</option>
+                              </select>
                             </div>
                             <div>
                               <label className="block text-sm font-medium text-gray-700 mb-2">Rest Between Shots (seconds)</label>
-                              <input
-                                type="number"
-                                min="1"
-                                max="10"
+                              <select
                                 value={sixCornersConfig.restBetweenShots}
-                                onChange={(e) => setSixCornersConfig({...sixCornersConfig, restBetweenShots: parseInt(e.target.value) || 1})}
+                                onChange={(e) => setSixCornersConfig({...sixCornersConfig, restBetweenShots: parseFloat(e.target.value)})}
                                 className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent text-lg font-semibold"
-                              />
+                                style={{ fontSize: '16px' }}
+                              >
+                                <option value="0.5">0.5</option>
+                                <option value="0.75">0.75</option>
+                                <option value="1.0">1.0</option>
+                                <option value="1.25">1.25</option>
+                                <option value="1.5">1.5</option>
+                                <option value="1.75">1.75</option>
+                                <option value="2.0">2.0</option>
+                                <option value="2.25">2.25</option>
+                                <option value="2.5">2.5</option>
+                                <option value="2.75">2.75</option>
+                                <option value="3.0">3.0</option>
+                                <option value="3.25">3.25</option>
+                                <option value="3.5">3.5</option>
+                                <option value="3.75">3.75</option>
+                                <option value="4.0">4.0</option>
+                                <option value="4.5">4.5</option>
+                                <option value="5.0">5.0</option>
+                                <option value="6.0">6.0</option>
+                                <option value="7.0">7.0</option>
+                                <option value="8.0">8.0</option>
+                                <option value="9.0">9.0</option>
+                                <option value="10.0">10.0</option>
+                              </select>
                             </div>
                             <div>
                               <label className="block text-sm font-medium text-gray-700 mb-2">Rest Between Sets (seconds)</label>
-                              <input
-                                type="number"
-                                min="15"
-                                max="180"
+                              <select
                                 value={sixCornersConfig.restBetweenSets}
-                                onChange={(e) => setSixCornersConfig({...sixCornersConfig, restBetweenSets: parseInt(e.target.value) || 15})}
+                                onChange={(e) => setSixCornersConfig({...sixCornersConfig, restBetweenSets: parseInt(e.target.value)})}
                                 className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent text-lg font-semibold"
-                              />
+                                style={{ fontSize: '16px' }}
+                              >
+                                <option value="15">15</option>
+                                <option value="30">30</option>
+                                <option value="45">45</option>
+                                <option value="60">60 (1 min)</option>
+                                <option value="75">75</option>
+                                <option value="90">90 (1.5 min)</option>
+                                <option value="120">120 (2 min)</option>
+                                <option value="150">150 (2.5 min)</option>
+                                <option value="180">180 (3 min)</option>
+                              </select>
                             </div>
                           </div>
                         </div>
@@ -779,7 +830,7 @@
                             <div className="bg-gradient-to-br from-blue-400 to-cyan-500 p-4 md:p-8 rounded-xl md:rounded-2xl mb-4">
                               <p className="text-white text-lg md:text-2xl font-bold mb-2 md:mb-4">GET READY!</p>
                               <div className="text-5xl md:text-7xl font-bold text-white">
-                                {sixCornersState.timeRemaining}
+                                {sixCornersState.timeRemaining.toFixed(2)}
                               </div>
                             </div>
                           </div>
@@ -870,7 +921,7 @@
                             <div className="bg-gradient-to-br from-orange-400 to-amber-500 p-4 md:p-8 rounded-xl md:rounded-2xl">
                               <p className="text-white text-lg md:text-xl font-semibold mb-2 md:mb-4">☕ SET BREAK</p>
                               <div className="text-5xl md:text-6xl font-bold text-white mb-2">
-                                {sixCornersState.timeRemaining}
+                                {sixCornersState.timeRemaining >= 10 ? Math.ceil(sixCornersState.timeRemaining) : sixCornersState.timeRemaining.toFixed(2)}
                               </div>
                               <p className="text-white text-sm md:text-lg">Get ready for set {sixCornersState.currentSet + 1}</p>
                             </div>
@@ -1077,6 +1128,7 @@
                           value={scheduleFormData.date}
                           onChange={(e) => setScheduleFormData({...scheduleFormData, date: e.target.value})}
                           className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                          style={{ fontSize: '16px' }}
                         />
                       </div>
                       <div>
@@ -1086,6 +1138,7 @@
                           value={scheduleFormData.time}
                           onChange={(e) => setScheduleFormData({...scheduleFormData, time: e.target.value})}
                           className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                          style={{ fontSize: '16px' }}
                         />
                       </div>
                       <div>
@@ -1094,6 +1147,7 @@
                           value={scheduleFormData.drill}
                           onChange={(e) => setScheduleFormData({...scheduleFormData, drill: e.target.value})}
                           className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                          style={{ fontSize: '16px' }}
                         >
                           {drills.map(drill => (
                             <option key={drill.id} value={drill.name}>{drill.name}</option>
@@ -1144,6 +1198,7 @@
                       value={userRole}
                       onChange={(e) => setUserRole(e.target.value)}
                       className="px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                      style={{ fontSize: '16px' }}
                     >
                       <option value="player">Player</option>
                       <option value="coach">Coach</option>
