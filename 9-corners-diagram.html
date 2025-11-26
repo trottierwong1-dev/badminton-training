@@ -47,8 +47,9 @@
             aspect-ratio: 6.1 / 13.4;
             background: linear-gradient(135deg, #10b981 0%, #059669 100%);
             border-radius: 8px;
-            padding: 15px;
+            padding: 12px;
             box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+            overflow: hidden;
         }
         .court {
             position: relative;
@@ -56,70 +57,71 @@
             height: 100%;
             border: 2px solid white;
             border-radius: 4px;
+            overflow: hidden;
         }
         /* Court lines */
         .center-line {
             position: absolute;
             left: 50%;
-            top: 0;
-            bottom: 0;
+            top: 2%;
+            bottom: 2%;
             width: 1px;
             background: white;
             transform: translateX(-50%);
         }
         .service-line-short-top {
             position: absolute;
-            left: 0;
-            right: 0;
+            left: 2%;
+            right: 2%;
             height: 1px;
             background: white;
             top: calc(50% - 14.8%);
         }
         .service-line-short-bottom {
             position: absolute;
-            left: 0;
-            right: 0;
+            left: 2%;
+            right: 2%;
             height: 1px;
             background: white;
             bottom: calc(50% - 14.8%);
         }
         .service-line-long-top {
             position: absolute;
-            left: 0;
-            right: 0;
+            left: 2%;
+            right: 2%;
             height: 1px;
             background: white;
             top: 6%;
         }
         .service-line-long-bottom {
             position: absolute;
-            left: 0;
-            right: 0;
+            left: 2%;
+            right: 2%;
             height: 1px;
             background: white;
             bottom: 6%;
         }
         .singles-line-left {
             position: absolute;
-            top: 0;
-            bottom: 0;
+            top: 2%;
+            bottom: 2%;
             width: 1px;
             background: white;
-            left: 15.5%;
+            left: 16%;
         }
         .singles-line-right {
             position: absolute;
-            top: 0;
-            bottom: 0;
+            top: 2%;
+            bottom: 2%;
             width: 1px;
             background: white;
-            right: 15.5%;
+            right: 16%;
         }
         .net {
             position: absolute;
             top: 50%;
-            left: 0;
-            right: 0;
+            left: 2%;
+            right: 2%;
             height: 2px;
             background: #fbbf24;
             transform: translateY(-50%);
