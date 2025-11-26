@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>9 Corners - 9 Position Diagram</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+        }
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            max-width: 800px;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 2.5rem;
+        }
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 16px;
+        }
+        .court-container {
+            position: relative;
+            width: 100%;
+            max-width: 280px;
+            margin: 0 auto;
+            aspect-ratio: 6.1 / 13.4;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        .court {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            border: 4px solid white;
+            border-radius: 5px;
+        }
+        /* Court lines */
+        .center-line {
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: white;
+            transform: translateX(-50%);
+        }
+        .service-line-short-top {
+            position: absolute;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: white;
+            top: calc(50% - 14.8%);
+        }
+        .service-line-short-bottom {
+            position: absolute;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: white;
+            bottom: calc(50% - 14.8%);
+        }
+        .service-line-long-top {
+            position: absolute;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: white;
+            top: 6%;
+        }
+        .service-line-long-bottom {
+            position: absolute;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: white;
+            bottom: 6%;
+        }
+        .singles-line-left {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: white;
+            left: 15.5%;
+        }
+        .singles-line-right {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: white;
+            right: 15.5%;
+        }
+        .net {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: #fbbf24;
+            transform: translateY(-50%);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+            z-index: 10;
+        }
+        /* Labels */
+        .label-opponent {
+            position: absolute;
+            top: 20%;
+            left: 50%;
+            transform: translateX(-50%);
+            color: white;
+            font-size: 12px;
+            font-weight: bold;
+            opacity: 0.7;
+        }
+        .label-player {
+            position: absolute;
+            bottom: 20%;
+            left: 50%;
+            transform: translateX(-50%);
+            color: white;
+            font-size: 12px;
+            font-weight: bold;
+            opacity: 0.7;
+        }
+        /* Corner positions */
+        .corner {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            font-weight: bold;
+            color: white;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            z-index: 20;
+        }
+        /* Back row - blue */
+        .corner.back {
+            background: linear-gradient(135deg, #3b82f6, #2563eb);
+        }
+        /* Middle row - purple */
+        .corner.middle {
+            background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+        }
+        /* Front row - pink */
+        .corner.front {
+            background: linear-gradient(135deg, #ec4899, #db2777);
+        }
+        /* Positions */
+        .corner-1 { bottom: 35%; right: 20%; transform: translate(50%, 50%); }
+        .corner-2 { bottom: 20%; right: 20%; transform: translate(50%, 50%); }
+        .corner-3 { bottom: 10%; right: 20%; transform: translate(50%, 50%); }
+        .corner-4 { bottom: 10%; left: 20%; transform: translate(-50%, 50%); }
+        .corner-5 { bottom: 20%; left: 20%; transform: translate(-50%, 50%); }
+        .corner-6 { bottom: 35%; left: 20%; transform: translate(-50%, 50%); }
+        .corner-7 { bottom: 35%; left: 50%; transform: translate(-50%, 50%); }
+        .corner-8 { bottom: 20%; left: 50%; transform: translate(-50%, 50%); }
+        .corner-9 { bottom: 10%; left: 50%; transform: translate(-50%, 50%); }
+        /* Legend */
+        .legend {
+            margin-top: 30px;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .legend-color {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        .legend-color.back { background: linear-gradient(135deg, #3b82f6, #2563eb); }
+        .legend-color.middle { background: linear-gradient(135deg, #8b5cf6, #7c3aed); }
+        .legend-color.front { background: linear-gradient(135deg, #ec4899, #db2777); }
+        .legend-text {
+            font-size: 16px;
+            font-weight: 600;
+            color: #333;
+        }
+        .info {
+            margin-top: 20px;
+            padding: 20px;
+            background: #f3f4f6;
+            border-radius: 10px;
+            font-size: 16px;
+            color: #666;
+            line-height: 1.8;
+        }
+        .info strong {
+            color: #333;
+        }
+        .begin-button {
+            display: block;
+            margin-top: 25px;
+            padding: 18px 40px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            text-align: center;
+            border-radius: 50px;
+            font-size: 18px;
+            font-weight: bold;
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .begin-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.6);
+            background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+        }
+        .begin-button:active {
+            transform: translateY(0);
+        }
+        .button-icon {
+            margin-right: 8px;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🏸 9 Corners Shadow Training</h1>
+        <p class="subtitle">9 Position Court Layout</p>
+        
+        <div class="court-container">
+            <div class="court">
+                <!-- Court lines -->
+                <div class="center-line"></div>
+                <div class="service-line-short-top"></div>
+                <div class="service-line-short-bottom"></div>
+                <div class="service-line-long-top"></div>
+                <div class="service-line-long-bottom"></div>
+                <div class="singles-line-left"></div>
+                <div class="singles-line-right"></div>
+                <div class="net"></div>
+                
+                <!-- Labels -->
+                <div class="label-opponent">OPPONENT</div>
+                <div class="label-player">YOUR SIDE</div>
+                
+                <!-- Corner positions -->
+                <div class="corner middle corner-1">1</div>
+                <div class="corner front corner-2">2</div>
+                <div class="corner back corner-3">3</div>
+                <div class="corner back corner-4">4</div>
+                <div class="corner front corner-5">5</div>
+                <div class="corner middle corner-6">6</div>
+                <div class="corner middle corner-7">7</div>
+                <div class="corner front corner-8">8</div>
+                <div class="corner back corner-9">9</div>
+            </div>
+        </div>
+        
+        <div class="legend">
+            <div class="legend-item">
+                <div class="legend-color back"></div>
+                <span class="legend-text">Back Row (3, 4, 9)</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color middle"></div>
+                <span class="legend-text">Middle Row (1, 6, 7)</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color front"></div>
+                <span class="legend-text">Front Row (2, 5, 8)</span>
+            </div>
+        </div>
+        
+        <div class="info">
+            <strong>How it works:</strong><br>
+            • The app randomly calls out a shot type and corner number<br>
+            • Move quickly to that position on your court<br>
+            • Execute the called shot (e.g., "Cross Smash, 3")<br>
+            • <strong>Front row:</strong> Net, Kill, Push, Lift<br>
+            • <strong>Middle row:</strong> Lift, Clear, Drop, Smash, Drive<br>
+            • <strong>Back row:</strong> Clear, Drop, Smash
+        </div>
+        
+        <a href="badminton-training-app.html" class="begin-button">
+            <span class="button-icon">▶</span>
+            Begin Training
+        </a>
+    </div>
+</body>
+</html>
